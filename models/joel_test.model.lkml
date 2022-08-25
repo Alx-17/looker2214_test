@@ -74,6 +74,12 @@ explore: fakeorders {
 explore: fatal_error_user_derived_base {}
 
 explore: flights {
+  query: test {
+    dimensions: [flights.carrier]
+    measures: [flights.count]
+    filters: [flights.carrier: "AA"]
+  }
+
   conditionally_filter: {
     filters: [flights.dep_date: "last 30 days"]
   }
