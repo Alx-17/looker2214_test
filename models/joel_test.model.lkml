@@ -73,7 +73,11 @@ explore: fakeorders {
 
 explore: fatal_error_user_derived_base {}
 
-explore: flights {}
+explore: flights {
+  conditionally_filter: {
+    filters: [flights.dep_date: "last 30 days"]
+  }
+}
 
 explore: human {}
 
