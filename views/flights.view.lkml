@@ -69,6 +69,8 @@ view: flights {
       date,
       week,
       month,
+      month_num,
+      month_name,
       quarter,
       year
     ]
@@ -128,5 +130,60 @@ view: flights {
   measure: count {
     type: count
     drill_fields: []
+  }
+
+  parameter: parameter_test {
+    type: unquoted
+    allowed_value: {
+      label: "Total Flight Time"
+      value: "flight_time"
+    }
+    allowed_value: {
+      label: "Total Distance"
+      value: "distance"
+    }
+  }
+
+  parameter: parameter_carrier {
+    type: unquoted
+    allowed_value: {
+      value: "AA"
+    }
+    allowed_value: {
+      value: "CA"
+    }
+  }
+
+  parameter: month {
+    type: unquoted
+    allowed_value: {
+      label: "January"
+      value: "01"
+    }
+    allowed_value: {
+      label: "August"
+      value: "08"
+    }
+  }
+
+  dimension: month_number {
+    type: string
+    case: {
+      when: {
+        sql: ${dep_month_num} = 9 ;;
+        label: "September"
+      }
+      when: {
+        sql: ${dep_month_num} = 8 ;;
+        label: "August"
+      }
+      # possibly more when statements
+      else: "Label If No Condition Met"
+    }
+  }
+
+  measure: sum_filght_time{
+    type: sum
+    sql: {% if parameter_test._parameter_value == "flight_time" %} IF( {% if parameter_carrier._parameter_value == 'AA' %} flights.carrier = 'AA' {% endif %}, 1, 0 ) {% endif %};;
   }
 }
