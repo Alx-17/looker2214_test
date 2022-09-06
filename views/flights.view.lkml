@@ -42,8 +42,9 @@ view: flights {
       month,
       quarter,
       year
-    ]
+    ]datatype: date
     sql: ${TABLE}.arr_time ;;
+    html: {{ rendered_value | date: "%d/%m/%Y" }} ;;
   }
 
   dimension: cancelled {
